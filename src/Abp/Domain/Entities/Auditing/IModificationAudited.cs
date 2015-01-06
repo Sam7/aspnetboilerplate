@@ -11,11 +11,11 @@ namespace Abp.Domain.Entities.Auditing
         /// <summary>
         /// The last time of modification.
         /// </summary>
-        DateTime? LastModificationTime { get; set; }
+        DateTime? LastModificationTimeUtc { get; set; }
 
         /// <summary>
         /// Last modifier user for this entity.
         /// </summary>
-        long? LastModifierUserId { get; set; }
+        Guid? LastModifierUserId { get; set; }
     }
 }

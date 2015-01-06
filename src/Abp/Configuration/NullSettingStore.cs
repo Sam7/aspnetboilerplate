@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 namespace Abp.Configuration
 {
+    using System;
+
     /// <summary>
     /// Implements null pattern for ISettingStore.
     /// </summary>
@@ -18,7 +20,7 @@ namespace Abp.Configuration
         }
 
         /// <inheritdoc/>
-        public SettingInfo GetSettingOrNull(int? tenantId, long? userId, string name)
+        public SettingInfo GetSettingOrNull(Guid? tenantId, Guid? userId, string name)
         {
             return null;
         }
@@ -39,7 +41,7 @@ namespace Abp.Configuration
         }
 
         /// <inheritdoc/>
-        public List<SettingInfo> GetAll(int? tenantId, long? userId)
+        public List<SettingInfo> GetAll(Guid? tenantId, Guid? userId)
         {
             return new List<SettingInfo>();
         }

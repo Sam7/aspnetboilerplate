@@ -32,7 +32,7 @@ namespace Abp.NHibernate.Interceptors
                 {
                     if (propertyNames[i] == "CreationTime")
                     {
-                        state[i] = (entity as IHasCreationTime).CreationTime = DateTime.Now; //TODO: UtcNow?
+                        state[i] = (entity as IHasCreationTime).CreationTimeUtc = DateTime.UtcNow;
                     }
                 }
             }
@@ -86,7 +86,7 @@ namespace Abp.NHibernate.Interceptors
                 {
                     if (propertyNames[i] == "LastModificationTime")
                     {
-                        currentState[i] = (entity as IModificationAudited).LastModificationTime = DateTime.Now; //TODO: UtcNow?
+                        currentState[i] = (entity as IModificationAudited).LastModificationTimeUtc = DateTime.UtcNow;
                     }
                     else if (propertyNames[i] == "LastModifierUserId")
                     {
@@ -115,7 +115,7 @@ namespace Abp.NHibernate.Interceptors
                     {
                         if (propertyNames[i] == "DeletionTime")
                         {
-                            currentState[i] = (entity as IDeletionAudited).DeletionTime = DateTime.Now; //TODO: UtcNow?
+                            currentState[i] = (entity as IDeletionAudited).DeletionTimeUtc = DateTime.UtcNow;
                         }
                         else if (propertyNames[i] == "DeleterUserId")
                         {

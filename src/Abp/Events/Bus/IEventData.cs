@@ -10,7 +10,7 @@ namespace Abp.Events.Bus
         /// <summary>
         /// The time when the event occured.
         /// </summary>
-        DateTime EventTime { get; set; }
+        DateTime EventTimeUtc { get; set; }
 
         /// <summary>
         /// The object which triggers the event (optional).

@@ -1,5 +1,7 @@
 ﻿namespace Abp.Runtime.Session
 {
+    using System;
+
     /// <summary>
     /// Implements null object pattern for <see cref="IAbpSession"/>.
     /// </summary>
@@ -12,10 +14,10 @@
         private static readonly NullAbpSession SingletonInstance = new NullAbpSession();
 
         /// <inheritdoc/>
-        public long? UserId { get { return null; } }
+        public Guid? UserId { get { return null; } }
 
         /// <inheritdoc/>
-        public int? TenantId { get { return null; } }
+        public Guid? TenantId { get { return null; } }
 
         private NullAbpSession()
         {

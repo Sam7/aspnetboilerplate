@@ -160,7 +160,7 @@ namespace Abp.Configuration
         }
 
         /// <inheritdoc/>
-        public IReadOnlyList<ISettingValue> GetAllSettingValuesForTenant(int tenantId)
+        public IReadOnlyList<ISettingValue> GetAllSettingValuesForTenant(Guid tenantId)
         {
             return GetReadOnlyTenantSettings(tenantId).Values
                 .Select(setting => new SettingValueObject(setting.Name, setting.Value))
@@ -168,7 +168,7 @@ namespace Abp.Configuration
         }
 
         /// <inheritdoc/>
-        public IReadOnlyList<ISettingValue> GetAllSettingValuesForUser(long userId)
+        public IReadOnlyList<ISettingValue> GetAllSettingValuesForUser(Guid userId)
         {
             return GetReadOnlyUserSettings(userId).Values
                 .Select(setting => new SettingValueObject(setting.Name, setting.Value))
@@ -195,7 +195,7 @@ namespace Abp.Configuration
 
         /// <inheritdoc/>
         [UnitOfWork]
-        public virtual void ChangeSettingForTenant(int tenantId, string name, string value)
+        public virtual void ChangeSettingForTenant(Guid tenantId, string name, string value)
         {
             var settingValue = InsertOrUpdateOrDeleteSettingValue(name, value, tenantId, null);
             var cachedDictionary = GetTenantSettingsFromCache(tenantId);
@@ -214,7 +214,7 @@ namespace Abp.Configuration
 
         /// <inheritdoc/>
         [UnitOfWork]
-        public virtual void ChangeSettingForUser(long userId, string name, string value)
+        public virtual void ChangeSettingForUser(Guid userId, string name, string value)
         {
             var settingValue = InsertOrUpdateOrDeleteSettingValue(name, value, null, userId);
             var cachedDictionary = GetUserSettingsFromCache(userId);
@@ -235,7 +235,7 @@ namespace Abp.Configuration
 
         #region Private methods
 
-        private SettingInfo InsertOrUpdateOrDeleteSettingValue(string name, string value, int? tenantId, long? userId)
+        private SettingInfo InsertOrUpdateOrDeleteSettingValue(string name, string value, Guid? tenantId, Guid? userId)
         {
             if (tenantId.HasValue && userId.HasValue)
             {
@@ -321,12 +321,12 @@ namespace Abp.Configuration
             }
         }
 
-        private SettingInfo GetSettingValueForTenantOrNull(int tenantId, string name)
+        private SettingInfo GetSettingValueForTenantOrNull(Guid tenantId, string name)
         {
             return GetReadOnlyTenantSettings(tenantId).GetOrDefault(name);
         }
 
-        private SettingInfo GetSettingValueForUserOrNull(long userId, string name)
+        private SettingInfo GetSettingValueForUserOrNull(Guid userId, string name)
         {
             return GetReadOnlyUserSettings(userId).GetOrDefault(name);
         }
@@ -345,7 +345,7 @@ namespace Abp.Configuration
         }
 
 
-        private ImmutableDictionary<string, SettingInfo> GetReadOnlyTenantSettings(int tenantId)
+        private ImmutableDictionary<string, SettingInfo> GetReadOnlyTenantSettings(Guid tenantId)
         {
             var cachedDictionary = GetTenantSettingsFromCache(tenantId);
             lock (cachedDictionary)
@@ -353,7 +353,7 @@ namespace Abp.Configuration
                 return cachedDictionary.ToImmutableDictionary();
             }
         }
-        private ImmutableDictionary<string, SettingInfo> GetReadOnlyUserSettings(long userId)
+        private ImmutableDictionary<string, SettingInfo> GetReadOnlyUserSettings(Guid userId)
         {
             var cachedDictionary = GetUserSettingsFromCache(userId);
             lock (cachedDictionary)
@@ -362,7 +362,7 @@ namespace Abp.Configuration
             }
         }
 
-        private Dictionary<string, SettingInfo> GetTenantSettingsFromCache(int tenantId)
+        private Dictionary<string, SettingInfo> GetTenantSettingsFromCache(Guid tenantId)
         {
             return _tenantSettingCache.Get(
                 tenantId.ToString(),
@@ -380,7 +380,7 @@ namespace Abp.Configuration
                 });
         }
 
-        private Dictionary<string, SettingInfo> GetUserSettingsFromCache(long userId)
+        private Dictionary<string, SettingInfo> GetUserSettingsFromCache(Guid userId)
         {
             return _userSettingCache.Get(
                 userId.ToString(),

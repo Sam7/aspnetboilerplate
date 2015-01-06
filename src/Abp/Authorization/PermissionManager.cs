@@ -70,7 +70,7 @@ namespace Abp.Authorization
             return _rootGroups.Values.ToImmutableList();
         }
 
-        public bool IsGranted(long userId, string permissionName)
+        public bool IsGranted(Guid userId, string permissionName)
         {
             var permission = GetPermissionOrNull(permissionName);
             if (permission == null)
@@ -82,7 +82,7 @@ namespace Abp.Authorization
             return PermissionGrantStore.IsGranted(userId, permissionName);
         }
 
-        public IReadOnlyList<Permission> GetGrantedPermissions(long userId)
+        public IReadOnlyList<Permission> GetGrantedPermissions(Guid userId)
         {
             return GetAllPermissions().Where(p => IsGranted(userId, p.Name)).ToImmutableList();
         }

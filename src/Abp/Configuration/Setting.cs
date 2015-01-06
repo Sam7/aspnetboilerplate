@@ -11,13 +11,13 @@ namespace Abp.Configuration
     //    /// TenantId for this setting.
     //    /// TenantId is null if this setting is not Tenant level.
     //    /// </summary>
-    //    public virtual int? TenantId { get; set; }
+    //    public virtual Guid? tenantId { get; set; }
 
     //    /// <summary>
     //    /// UserId for this setting.
     //    /// UserId is null if this setting is not user level.
     //    /// </summary>
-    //    public virtual long? UserId { get; set; }
+    //    public virtual Guid? userId { get; set; }
         
     //    /// <summary>
     //    /// Unique name of the setting.

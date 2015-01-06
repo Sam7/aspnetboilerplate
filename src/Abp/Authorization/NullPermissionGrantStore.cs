@@ -1,5 +1,7 @@
 namespace Abp.Authorization
 {
+    using System;
+
     /// <summary>
     /// Null (and default) implementation of <see cref="IPermissionGrantStore"/>.
     /// </summary>
@@ -17,7 +19,7 @@ namespace Abp.Authorization
         /// <param name="userId">Id of the user to check</param>
         /// <param name="permissionName">Name of the permission</param>
         /// <returns><c>true</c> if this instance is granted the specified userId permissionName; otherwise, <c>false</c>.</returns>
-        public bool IsGranted(long userId, string permissionName)
+        public bool IsGranted(Guid userId, string permissionName)
         {
             return true;
         }

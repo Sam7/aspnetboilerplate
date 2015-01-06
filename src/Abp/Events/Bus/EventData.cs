@@ -11,7 +11,7 @@ namespace Abp.Events.Bus
         /// <summary>
         /// The time when the event occured.
         /// </summary>
-        public DateTime EventTime { get; set; }
+        public DateTime EventTimeUtc { get; set; }
 
         /// <summary>
         /// The object which triggers the event (optional).
@@ -23,7 +23,7 @@ namespace Abp.Events.Bus
         /// </summary>
         protected EventData()
         {
-            EventTime = DateTime.Now;
+            this.EventTimeUtc = DateTime.UtcNow;
         }
     }
 }

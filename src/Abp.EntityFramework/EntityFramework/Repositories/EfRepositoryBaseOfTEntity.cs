@@ -4,8 +4,10 @@ using Abp.Domain.Repositories;
 
 namespace Abp.EntityFramework.Repositories
 {
-    public class EfRepositoryBase<TDbContext, TEntity> : EfRepositoryBase<TDbContext, TEntity, int>, IRepository<TEntity>
-        where TEntity : class, IEntity<int>
+    using System;
+
+    public class EfRepositoryBase<TDbContext, TEntity> : EfRepositoryBase<TDbContext, TEntity, Guid>, IRepository<TEntity>
+        where TEntity : class, IEntity<Guid>
         where TDbContext : DbContext
     {
         public EfRepositoryBase(IDbContextProvider<TDbContext> dbContextProvider)

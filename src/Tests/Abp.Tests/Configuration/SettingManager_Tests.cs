@@ -7,6 +7,8 @@ using Xunit;
 
 namespace Abp.Tests.Configuration
 {
+    using System;
+
     public class SettingManager_Tests : TestBaseWithLocalIocManager
     {
         private const string MyAppLevelSetting = "MyAppLevelSetting";
@@ -40,19 +42,19 @@ namespace Abp.Tests.Configuration
             settingManager.SettingStore = new MemorySettingStore();
             settingManager.Session = session;
 
-            session.TenantId = 1;
+            session.TenantId = Guid.NewGuid();
 
-            session.UserId = 1;
+            session.UserId = Guid.NewGuid();
             settingManager.GetSettingValue(MyAllLevelsSetting).ShouldBe("user 1 stored value");
 
-            session.UserId = 2;
+            session.UserId = Guid.NewGuid();
             settingManager.GetSettingValue(MyAllLevelsSetting).ShouldBe("user 2 stored value");
 
-            session.UserId = 3;
+            session.UserId = Guid.NewGuid();
             settingManager.GetSettingValue(MyAllLevelsSetting).ShouldBe("tenant 1 stored value"); //Because no user value in the store
 
-            session.TenantId = 3;
-            session.UserId = 3;
+            session.TenantId = Guid.NewGuid();
+            session.UserId = Guid.NewGuid();
             settingManager.GetSettingValue(MyAllLevelsSetting).ShouldBe("application level stored value"); //Because no user and tenant value in the store
         }
 
@@ -62,17 +64,17 @@ namespace Abp.Tests.Configuration
             var settingManager = new SettingManager(CreateMockSettingDefinitionManager());
             settingManager.SettingStore = new MemorySettingStore();
 
-            settingManager.GetAllSettingValues().Count.ShouldBe(2);
+            settingManager.GetAllSettingValues().Count.ShouldBe(1);
 
             settingManager.GetAllSettingValuesForApplication().Count.ShouldBe(2);
 
-            settingManager.GetAllSettingValuesForTenant(1).Count.ShouldBe(1);
-            settingManager.GetAllSettingValuesForTenant(2).Count.ShouldBe(0);
-            settingManager.GetAllSettingValuesForTenant(3).Count.ShouldBe(0);
+            settingManager.GetAllSettingValuesForTenant(Guid.NewGuid()).Count.ShouldBe(1);
+            settingManager.GetAllSettingValuesForTenant(Guid.NewGuid()).Count.ShouldBe(0);
+            settingManager.GetAllSettingValuesForTenant(Guid.NewGuid()).Count.ShouldBe(0);
 
-            settingManager.GetAllSettingValuesForUser(1).Count.ShouldBe(1);
-            settingManager.GetAllSettingValuesForUser(2).Count.ShouldBe(1);
-            settingManager.GetAllSettingValuesForUser(3).Count.ShouldBe(0);
+            settingManager.GetAllSettingValuesForUser(Guid.NewGuid()).Count.ShouldBe(1);
+            settingManager.GetAllSettingValuesForUser(Guid.NewGuid()).Count.ShouldBe(1);
+            settingManager.GetAllSettingValuesForUser(Guid.NewGuid()).Count.ShouldBe(0);
         }
 
         [Fact]
@@ -97,14 +99,14 @@ namespace Abp.Tests.Configuration
 
             //Tenant level changes
 
-            session.TenantId = 1;
-            settingManager.ChangeSettingForTenant(1, MyAllLevelsSetting, "tenant 1 changed value");
+            session.TenantId = Guid.NewGuid();
+            settingManager.ChangeSettingForTenant(session.TenantId.Value, MyAllLevelsSetting, "tenant 1 changed value");
             settingManager.GetSettingValue(MyAllLevelsSetting).ShouldBe("tenant 1 changed value");
 
             //User level changes
 
-            session.UserId = 1;
-            settingManager.ChangeSettingForUser(1, MyAllLevelsSetting, "user 1 changed value");
+            session.UserId = Guid.NewGuid();
+            settingManager.ChangeSettingForUser(session.UserId.Value, MyAllLevelsSetting, "user 1 changed value");
             settingManager.GetSettingValue(MyAllLevelsSetting).ShouldBe("user 1 changed value");
         }
 
@@ -118,24 +120,24 @@ namespace Abp.Tests.Configuration
             settingManager.SettingStore = store;
             settingManager.Session = session;
 
-            session.TenantId = 1;
-            session.UserId = 1;
+            session.TenantId = Guid.NewGuid();
+            session.UserId = Guid.NewGuid();
 
             //We can get user's personal stored value
-            store.GetSettingOrNull(null, 1, MyAllLevelsSetting).ShouldNotBe(null);
+            store.GetSettingOrNull(null, session.UserId, MyAllLevelsSetting).ShouldNotBe(null);
             settingManager.GetSettingValue(MyAllLevelsSetting).ShouldBe("user 1 stored value");
 
             //This will delete setting for the user since it's same as tenant's setting value
-            settingManager.ChangeSettingForUser(1, MyAllLevelsSetting, "tenant 1 stored value");
-            store.GetSettingOrNull(null, 1, MyAllLevelsSetting).ShouldBe(null);
+            settingManager.ChangeSettingForUser(session.UserId.Value, MyAllLevelsSetting, "tenant 1 stored value");
+            store.GetSettingOrNull(null, session.UserId, MyAllLevelsSetting).ShouldBe(null);
 
             //We can get tenant's setting value
-            store.GetSettingOrNull(1, null, MyAllLevelsSetting).ShouldNotBe(null);
+            store.GetSettingOrNull(session.TenantId, null, MyAllLevelsSetting).ShouldNotBe(null);
             settingManager.GetSettingValue(MyAllLevelsSetting).ShouldBe("tenant 1 stored value");
 
             //This will delete setting for tenant since it's same as application's setting value
-            settingManager.ChangeSettingForTenant(1, MyAllLevelsSetting, "application level stored value");
-            store.GetSettingOrNull(null, 1, MyAllLevelsSetting).ShouldBe(null);
+            settingManager.ChangeSettingForTenant(session.TenantId.Value, MyAllLevelsSetting, "application level stored value");
+            store.GetSettingOrNull(null, session.UserId, MyAllLevelsSetting).ShouldBe(null);
 
             //We can get application's value
             store.GetSettingOrNull(null, null, MyAllLevelsSetting).ShouldNotBe(null);
@@ -176,13 +178,13 @@ namespace Abp.Tests.Configuration
                             {
                                 new SettingInfo(null, null, MyAppLevelSetting, "48"),
                                 new SettingInfo(null, null, MyAllLevelsSetting, "application level stored value"),
-                                new SettingInfo(1, null, MyAllLevelsSetting, "tenant 1 stored value"),
-                                new SettingInfo(null, 1, MyAllLevelsSetting, "user 1 stored value"),
-                                new SettingInfo(null, 2, MyAllLevelsSetting, "user 2 stored value")
+                                new SettingInfo(Guid.NewGuid(), null, MyAllLevelsSetting, "tenant 1 stored value"),
+                                new SettingInfo(null, Guid.NewGuid(), MyAllLevelsSetting, "user 1 stored value"),
+                                new SettingInfo(null, Guid.NewGuid(), MyAllLevelsSetting, "user 2 stored value")
                             };
             }
 
-            public SettingInfo GetSettingOrNull(int? tenantId, long? userId, string name)
+            public SettingInfo GetSettingOrNull(Guid? tenantId, Guid? userId, string name)
             {
                 return _settings.FirstOrDefault(s => s.TenantId == tenantId && s.UserId == userId && s.Name == name);
             }
@@ -206,7 +208,7 @@ namespace Abp.Tests.Configuration
                 }
             }
 
-            public List<SettingInfo> GetAll(int? tenantId, long? userId)
+            public List<SettingInfo> GetAll(Guid? tenantId, Guid? userId)
             {
                 return _settings.Where(s => s.TenantId == tenantId && s.UserId == userId).ToList();
             }

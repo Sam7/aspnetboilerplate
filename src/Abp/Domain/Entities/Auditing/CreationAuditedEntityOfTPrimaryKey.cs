@@ -11,19 +11,19 @@ namespace Abp.Domain.Entities.Auditing
         /// <summary>
         /// Creation time of this entity.
         /// </summary>
-        public virtual DateTime CreationTime { get; set; }
+        public virtual DateTime CreationTimeUtc { get; set; }
 
         /// <summary>
         /// Creator of this entity.
         /// </summary>
-        public virtual long? CreatorUserId { get; set; }
+        public virtual Guid? CreatorUserId { get; set; }
 
         /// <summary>
         /// Constructor.
         /// </summary>
         protected CreationAuditedEntity()
         {
-            CreationTime = DateTime.Now; //TODO: UtcNow?
+            this.CreationTimeUtc = DateTime.UtcNow;
         }
     }
 }

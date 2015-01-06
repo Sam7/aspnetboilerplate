@@ -1,5 +1,7 @@
 ﻿namespace Abp.Domain.Entities
 {
+    using System;
+
     /// <summary>
     /// Implement this interface for an entity which may optionally have TenantId.
     /// </summary>
@@ -8,6 +10,6 @@
         /// <summary>
         /// TenantId of this entity.
         /// </summary>
-        int? TenantId { get; set; }
+        Guid? tenantId { get; set; }
     }
 }

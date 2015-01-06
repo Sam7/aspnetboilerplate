@@ -10,8 +10,8 @@ using MongoDB.Driver.Linq;
 
 namespace Abp.MongoDb.Repositories
 {
-    public class MongoDbRepositoryBase<TEntity> : MongoDbRepositoryBase<TEntity, int>, IRepository<TEntity>
-        where TEntity : class, IEntity<int>
+    public class MongoDbRepositoryBase<TEntity> : MongoDbRepositoryBase<TEntity, Guid>, IRepository<TEntity>
+        where TEntity : class, IEntity<Guid>
     {
         public MongoDbRepositoryBase(IMongoDatabaseProvider databaseProvider)
             : base(databaseProvider)

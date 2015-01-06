@@ -6,6 +6,8 @@ using Xunit;
 
 namespace Abp.Web.Tests.Navigation
 {
+    using System;
+
     public class NavigationScript_Tests
     {
         [Fact]
@@ -14,7 +16,7 @@ namespace Abp.Web.Tests.Navigation
             var testCase = new NavigationTestCase();
             var scriptManager = new NavigationScriptManager(testCase.UserNavigationManager)
             {
-                AbpSession = new MyChangableSession { UserId = 1 }
+                AbpSession = new MyChangableSession { UserId = Guid.NewGuid() }
             };
 
             var script = scriptManager.GetScript();

@@ -2,6 +2,8 @@
 
 namespace Abp.Application.Navigation
 {
+    using System;
+
     /// <summary>
     /// Used to manage navigation for users.
     /// </summary>
@@ -12,12 +14,12 @@ namespace Abp.Application.Navigation
         /// </summary>
         /// <param name="menuName">Unique name of the menu</param>
         /// <param name="userId">User id or null for anonymous users</param>
-        UserMenu GetMenu(string menuName, long? userId);
+        UserMenu GetMenu(string menuName, Guid? userId);
 
         /// <summary>
         /// Gets all menus specialized for given user.
         /// </summary>
         /// <param name="userId">User id or null for anonymous users</param>
-        IReadOnlyList<UserMenu> GetMenus(long? userId);
+        IReadOnlyList<UserMenu> GetMenus(Guid? userId);
     }
 }

@@ -116,7 +116,7 @@ namespace Abp.EntityFramework
         {
             if (entry.Entity is IHasCreationTime)
             {
-                entry.Cast<IHasCreationTime>().Entity.CreationTime = DateTime.Now; //TODO: UtcNow?
+                entry.Cast<IHasCreationTime>().Entity.CreationTimeUtc = DateTime.UtcNow;
             }
 
             if (entry.Entity is ICreationAudited)
@@ -145,7 +145,7 @@ namespace Abp.EntityFramework
             {
                 var auditedEntry = entry.Cast<IModificationAudited>();
 
-                auditedEntry.Entity.LastModificationTime = DateTime.Now; //TODO: UtcNow?
+                auditedEntry.Entity.LastModificationTimeUtc = DateTime.UtcNow;
                 auditedEntry.Entity.LastModifierUserId = AbpSession.UserId;
             }
         }
@@ -162,7 +162,7 @@ namespace Abp.EntityFramework
                 if (entry.Entity is IDeletionAudited)
                 {
                     var deletionAuditedEntry = entry.Cast<IDeletionAudited>();
-                    deletionAuditedEntry.Entity.DeletionTime = DateTime.Now; //TODO: UtcNow?
+                    deletionAuditedEntry.Entity.DeletionTimeUtc = DateTime.UtcNow;
                     deletionAuditedEntry.Entity.DeleterUserId = AbpSession.UserId;
                 }
             }

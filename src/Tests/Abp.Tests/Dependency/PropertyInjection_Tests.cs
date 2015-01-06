@@ -18,8 +18,8 @@ namespace Abp.Tests.Dependency
         public void Should_Inject_Session_For_ApplicationService()
         {
             var session = Substitute.For<IAbpSession>();
-            session.TenantId.Returns(1);
-            session.UserId.Returns(42);
+            session.TenantId.Returns(Guid.NewGuid());
+            session.UserId.Returns(Guid.NewGuid());
 
             LocalIocManager.Register<MyApplicationService>();
             LocalIocManager.IocContainer.Register(
@@ -35,8 +35,8 @@ namespace Abp.Tests.Dependency
             public void TestSession()
             {
                 CurrentSession.ShouldNotBe(null);
-                CurrentSession.TenantId.ShouldBe(1);
-                CurrentSession.UserId.ShouldBe(42);
+                CurrentSession.TenantId.ShouldBe(Guid.NewGuid());
+                CurrentSession.UserId.ShouldBe(Guid.NewGuid());
             }
         }
     }

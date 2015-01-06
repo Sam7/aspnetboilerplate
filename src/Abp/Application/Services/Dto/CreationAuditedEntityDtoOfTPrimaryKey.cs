@@ -13,19 +13,19 @@ namespace Abp.Application.Services.Dto
         /// <summary>
         /// Creation date of this entity.
         /// </summary>
-        public DateTime CreationTime { get; set; }
+        public DateTime CreationTimeUtc { get; set; }
 
         /// <summary>
         /// Creator user's id for this entity.
         /// </summary>
-        public long? CreatorUserId { get; set; }
+        public Guid? CreatorUserId { get; set; }
 
         /// <summary>
         /// Constructor.
         /// </summary>
         protected CreationAuditedEntityDto()
         {
-            CreationTime = DateTime.Now;
+            this.CreationTimeUtc = DateTime.UtcNow;
         }
     }
 }

@@ -10,11 +10,11 @@ namespace Abp.Domain.Entities.Auditing
         /// <summary>
         /// Which user deleted this entity?
         /// </summary>
-        long? DeleterUserId { get; set; }
+        Guid? DeleterUserId { get; set; }
 
         /// <summary>
         /// Deletion time of this entity.
         /// </summary>
-        DateTime? DeletionTime { get; set; }
+        DateTime? DeletionTimeUtc { get; set; }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Abp.Authorization
 {
+    using System;
+
     /// <summary>
     /// Permission manager.
     /// </summary>
@@ -38,12 +40,12 @@ namespace Abp.Authorization
         /// </summary>
         /// <param name="userId">Id of the user to check</param>
         /// <param name="permissionName">Name of the permission</param>
-        bool IsGranted(long userId, string permissionName);
+        bool IsGranted(Guid userId, string permissionName);
 
         /// <summary>
         /// Gets all granted permissions for current user.
         /// </summary>
         /// <returns></returns>
-        IReadOnlyList<Permission> GetGrantedPermissions(long userId);
+        IReadOnlyList<Permission> GetGrantedPermissions(Guid userId);
     }
 }

@@ -5,6 +5,8 @@ using Xunit;
 
 namespace Abp.Tests.Application.Navigation
 {
+    using System;
+
     public class Menu_Tests : TestBaseWithLocalIocManager
     {
         [Fact]
@@ -21,7 +23,8 @@ namespace Abp.Tests.Application.Navigation
             adminMenuItemDefinition.Items.Count.ShouldBe(3);
             
             //Check user menus
-            var userMenu = testCase.UserNavigationManager.GetMenu(mainMenuDefinition.Name, 1);
+            var userId = Guid.NewGuid();
+            var userMenu = testCase.UserNavigationManager.GetMenu(mainMenuDefinition.Name, userId);
             userMenu.Items.Count.ShouldBe(1);
 
             var userAdminMenu = userMenu.Items.FirstOrDefault(i => i.Name == "Abp.Zero.Administration");

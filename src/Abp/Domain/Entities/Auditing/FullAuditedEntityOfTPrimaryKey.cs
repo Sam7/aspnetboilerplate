@@ -16,11 +16,11 @@ namespace Abp.Domain.Entities.Auditing
         /// <summary>
         /// Which user deleted this entity?
         /// </summary>
-        public virtual long? DeleterUserId { get; set; }
+        public virtual Guid? DeleterUserId { get; set; }
         
         /// <summary>
         /// Deletion time of this entity.
         /// </summary>
-        public virtual DateTime? DeletionTime { get; set; }
+        public virtual DateTime? DeletionTimeUtc { get; set; }
     }
 }

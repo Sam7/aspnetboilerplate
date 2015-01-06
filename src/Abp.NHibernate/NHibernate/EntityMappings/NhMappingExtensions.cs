@@ -34,7 +34,7 @@ namespace Abp.NHibernate.EntityMappings
         /// <typeparam name="TEntity">Entity type</typeparam>
         public static void MapCreationTime<TEntity>(this ClassMap<TEntity> mapping) where TEntity : IHasCreationTime
         {
-            mapping.Map(x => (x as IHasCreationTime).CreationTime);
+            mapping.Map(x => (x as IHasCreationTime).CreationTimeUtc);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Abp.NHibernate.EntityMappings
         /// <typeparam name="TEntity">Entity type</typeparam>
         public static void MapModificationAudited<TEntity>(this ClassMap<TEntity> mapping) where TEntity : IModificationAudited
         {
-            mapping.Map(x => (x as IModificationAudited).LastModificationTime);
+            mapping.Map(x => (x as IModificationAudited).LastModificationTimeUtc);
             mapping.Map(x => (x as IModificationAudited).LastModifierUserId);
         }
     }

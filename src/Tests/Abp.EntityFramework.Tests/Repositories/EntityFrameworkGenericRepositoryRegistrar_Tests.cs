@@ -22,7 +22,7 @@ namespace Abp.EntityFramework.Tests.Repositories
 
             EntityFrameworkGenericRepositoryRegistrar.RegisterForDbContext(typeof(MyDbContext), LocalIocManager);
 
-            var entity1Repository = LocalIocManager.Resolve<IRepository<MyEntity1>>();
+            var entity1Repository = LocalIocManager.Resolve<IRepository<MyEntity1, int>>();
             entity1Repository.ShouldNotBe(null);
 
             var entity1RepositoryWithPk = LocalIocManager.Resolve<IRepository<MyEntity1, int>>();
@@ -42,7 +42,7 @@ namespace Abp.EntityFramework.Tests.Repositories
             public IDbSet<MyEntity1> MyEntities1 { get; set; }            
         }
 
-        public class MyEntity1 : Entity
+        public class MyEntity1 : Entity<int>
         {
 
         }

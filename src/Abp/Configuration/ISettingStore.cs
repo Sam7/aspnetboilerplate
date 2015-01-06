@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 namespace Abp.Configuration
 {
+    using System;
+
     /// <summary>
     /// This interface is used to get/set settings from/to a data source (database).
     /// </summary>
@@ -14,7 +16,7 @@ namespace Abp.Configuration
         /// <param name="userId">UserId or null</param>
         /// <param name="name">Name of the setting</param>
         /// <returns>Setting object</returns>
-        SettingInfo GetSettingOrNull(int? tenantId, long? userId, string name);
+        SettingInfo GetSettingOrNull(Guid? tenantId, Guid? userId, string name);
 
         /// <summary>
         /// Deletes a setting.
@@ -40,6 +42,6 @@ namespace Abp.Configuration
         /// <param name="tenantId">TenantId or null</param>
         /// <param name="userId">UserId or null</param>
         /// <returns>List of settings</returns>
-        List<SettingInfo> GetAll(int? tenantId, long? userId);
+        List<SettingInfo> GetAll(Guid? tenantId, Guid? userId);
     }
 }

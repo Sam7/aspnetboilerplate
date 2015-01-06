@@ -7,6 +7,8 @@ using Abp.Dependency;
 
 namespace Abp.Application.Navigation
 {
+    using System;
+
     internal class UserNavigationManager : IUserNavigationManager, ISingletonDependency
     {
         private readonly IPermissionManager _permissionManager;
@@ -18,7 +20,7 @@ namespace Abp.Application.Navigation
             _navigationManager = navigationManager;
         }
 
-        public UserMenu GetMenu(string menuName, long? userId)
+        public UserMenu GetMenu(string menuName, Guid? userId)
         {
             var menuDefinition = _navigationManager.Menus.GetOrDefault(menuName);
             if (menuDefinition == null)
@@ -31,12 +33,12 @@ namespace Abp.Application.Navigation
             return userMenu;
         }
 
-        public IReadOnlyList<UserMenu> GetMenus(long? userId)
+        public IReadOnlyList<UserMenu> GetMenus(Guid? userId)
         {
             return _navigationManager.Menus.Values.Select(m => GetMenu(m.Name, userId)).ToImmutableList();
         }
 
-        private int FillUserMenuItems(long? userId, IList<MenuItemDefinition> menuItemDefinitions, IList<UserMenuItem> userMenuItems)
+        private int FillUserMenuItems(Guid? userId, IList<MenuItemDefinition> menuItemDefinitions, IList<UserMenuItem> userMenuItems)
         {
             var addedMenuItemCount = 0;
 

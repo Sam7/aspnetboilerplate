@@ -9,7 +9,7 @@ namespace Abp.Domain.Entities.Auditing
     /// <typeparam name="TPrimaryKey">Type of the primary key of the entity</typeparam>
     /// <typeparam name="TUser">Type of the user</typeparam>
     public abstract class FullAuditedEntity<TPrimaryKey, TUser> : AuditedEntity<TPrimaryKey, TUser>, IFullAudited<TUser>
-        where TUser : IEntity<long>
+        where TUser : IEntity<Guid>
     {
         /// <summary>
         /// Is this entity Deleted?
@@ -25,11 +25,11 @@ namespace Abp.Domain.Entities.Auditing
         /// <summary>
         /// Which user deleted this entity?
         /// </summary>
-        public virtual long? DeleterUserId { get; set; }
+        public virtual Guid? DeleterUserId { get; set; }
 
         /// <summary>
         /// Deletion time of this entity.
         /// </summary>
-        public virtual DateTime? DeletionTime { get; set; }
+        public virtual DateTime? DeletionTimeUtc { get; set; }
     }
 }

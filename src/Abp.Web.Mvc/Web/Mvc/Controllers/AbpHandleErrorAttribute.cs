@@ -34,7 +34,7 @@ namespace Abp.Web.Mvc.Controllers
                 return;
             }
 
-            //Always log exception
+            // Always log exception
             LogHelper.LogException(context.Exception);
 
             // If custom errors are disabled, we need to let the normal ASP.NET exception handler
@@ -51,13 +51,13 @@ namespace Abp.Web.Mvc.Controllers
                 return;
             }
 
-            //Do not handle exceptions for attributes configured for special exception types and this exceptiod does not fit condition.
+            // Do not handle exceptions for attributes configured for special exception types and this exception does not fit condition.
             if (!ExceptionType.IsInstanceOfType(context.Exception))
             {
                 return;
             }
 
-            //We handled the exception!
+            // We handled the exception!
             context.ExceptionHandled = true;
 
             //Return a special error response to the client.

@@ -2,6 +2,8 @@
 
 namespace Abp.Configuration
 {
+    using System;
+
     /// <summary>
     /// This is the main interface that must be implemented to be able to load/store values of settings for a data source.
     /// </summary>
@@ -47,7 +49,7 @@ namespace Abp.Configuration
         /// </summary>
         /// <param name="tenantId">Tenant to get settings</param>
         /// <returns>List of setting values</returns>
-        IReadOnlyList<ISettingValue> GetAllSettingValuesForTenant(int tenantId);
+        IReadOnlyList<ISettingValue> GetAllSettingValuesForTenant(Guid tenantId);
 
         /// <summary>
         /// Gets a list of all setting values specified for a user.
@@ -57,7 +59,7 @@ namespace Abp.Configuration
         /// </summary>
         /// <param name="userId">User to get settings</param>
         /// <returns>All settings of the user</returns>
-        IReadOnlyList<ISettingValue> GetAllSettingValuesForUser(long userId);
+        IReadOnlyList<ISettingValue> GetAllSettingValuesForUser(Guid userId);
 
         /// <summary>
         /// Changes setting for the application level.
@@ -72,7 +74,7 @@ namespace Abp.Configuration
         /// <param name="tenantId">TenantId</param>
         /// <param name="name">Unique name of the setting</param>
         /// <param name="value">Value of the setting</param>
-        void ChangeSettingForTenant(int tenantId, string name, string value);
+        void ChangeSettingForTenant(Guid tenantId, string name, string value);
 
         /// <summary>
         /// Changes setting for a user.
@@ -80,6 +82,6 @@ namespace Abp.Configuration
         /// <param name="userId">UserId</param>
         /// <param name="name">Unique name of the setting</param>
         /// <param name="value">Value of the setting</param>
-        void ChangeSettingForUser(long userId, string name, string value);
+        void ChangeSettingForUser(Guid userId, string name, string value);
     }
 }

@@ -2,11 +2,13 @@ using Abp.Domain.Entities;
 
 namespace Abp.NHibernate.EntityMappings
 {
+    using System;
+
     /// <summary>
-    /// A shortcut of <see cref="EntityMap{TEntity,TPrimaryKey}"/> for most used primary key type (<see cref="int"/>).
+    /// A shortcut of <see cref="EntityMap{TEntity,TPrimaryKey}"/> for most used primary key type (<see cref="Guid"/>).
     /// </summary>
     /// <typeparam name="TEntity">Entity map</typeparam>
-    public abstract class EntityMap<TEntity> : EntityMap<TEntity, int> where TEntity : IEntity<int>
+    public abstract class EntityMap<TEntity> : EntityMap<TEntity, Guid> where TEntity : IEntity<Guid>
     {
         /// <summary>
         /// Constructor.

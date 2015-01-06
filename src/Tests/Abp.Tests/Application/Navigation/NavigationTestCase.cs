@@ -7,6 +7,8 @@ using NSubstitute;
 
 namespace Abp.Tests.Application.Navigation
 {
+    using System;
+
     internal class NavigationTestCase
     {
         public NavigationManager NavigationManager { get; private set; }
@@ -48,8 +50,9 @@ namespace Abp.Tests.Application.Navigation
         private static IPermissionManager CreateMockPermissionManager()
         {
             var permissionManager = Substitute.For<IPermissionManager>();
-            permissionManager.IsGranted(1, "Abp.Zero.UserManagement").Returns(true);
-            permissionManager.IsGranted(1, "Abp.Zero.RoleManagement").Returns(false);
+            var userId = Guid.NewGuid();
+            permissionManager.IsGranted(userId, "Abp.Zero.UserManagement").Returns(true);
+            permissionManager.IsGranted(userId, "Abp.Zero.RoleManagement").Returns(false);
             return permissionManager;
         }
 
