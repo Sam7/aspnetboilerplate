@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>Abp.MongoDB</id>
+    <id>Monkii.Abp.MongoDB</id>
     <version>$version$</version>
     <title>Abp.MongoDB</title>
     <authors>Halil İbrahim Kalkan</authors>

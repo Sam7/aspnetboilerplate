@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>Abp.Web</id>
+    <id>Monkii.Abp.Web</id>
     <version>$version$</version>
     <title>Abp.Web</title>
     <authors>Halil İbrahim Kalkan</authors>

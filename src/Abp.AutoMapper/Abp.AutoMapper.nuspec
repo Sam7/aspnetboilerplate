@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>Abp.AutoMapper</id>
+    <id>Monkii.Abp.AutoMapper</id>
     <version>$version$</version>
     <title>Abp.AutoMapper</title>
     <authors>Halil İbrahim Kalkan</authors>

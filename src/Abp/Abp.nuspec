@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>Abp</id>
+    <id>Monkii.Abp</id>
     <version>$version$</version>
     <title>Abp</title>
-    <authors>Halil İbrahim Kalkan</authors>
-    <owners>Halil İbrahim Kalkan</owners>
+    <authors>Halil İbrahim Kalkan, Monkii</authors>
+    <owners>Monkii</owners>
     <description>ASP.NET Boilerplate core package.</description>
     <projectUrl>http://www.aspnetboilerplate.com</projectUrl>
     <iconUrl>http://www.aspnetboilerplate.com/images/abp_nupkg.png</iconUrl>
