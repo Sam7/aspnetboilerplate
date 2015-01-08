@@ -17,7 +17,7 @@ namespace Abp.EntityFramework.Repositories
                     if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IEntity<>))
                     {
                         var primaryKeyType = interfaceType.GenericTypeArguments[0];
-                        if (primaryKeyType == typeof(int))
+                        if (primaryKeyType == typeof(Guid))
                         {
                             var genericRepositoryType = typeof(IRepository<>).MakeGenericType(entityType);
                             if (!iocManager.IsRegistered(genericRepositoryType))
