@@ -26,6 +26,8 @@ namespace Abp.Web.Localization
             _cache = new ThreadSafeObjectCache<string>(new MemoryCache("__LocalizationScriptManager"), TimeSpan.FromDays(1));
         }
 
+        
+
         /// <inheritdoc/>
         public string GetScript()
         {
@@ -36,6 +38,12 @@ namespace Abp.Web.Localization
         public string GetScript(CultureInfo cultureInfo)
         {
             return _cache.Get(cultureInfo.Name, BuildAll);
+        }
+
+        /// <inheritdoc/>
+        public void ClearCache(CultureInfo cultureInfo)
+        {
+            _cache.Remove(cultureInfo.Name);
         }
 
         private string BuildAll()

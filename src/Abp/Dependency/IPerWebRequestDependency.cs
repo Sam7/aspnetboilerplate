@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Abp.Dependency
 {
-    interface IPerWebRequestDependency
+    public interface IPerWebRequestDependency
     {
     }
 }

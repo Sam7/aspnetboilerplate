@@ -17,5 +17,13 @@ namespace Abp.Web.Localization
         /// </summary>
         /// <param name="cultureInfo">Culture to get script</param>
         string GetScript(CultureInfo cultureInfo);
+
+        /// <summary>
+        /// Clears the script cache.
+        /// </summary>
+        /// <param name="cultureInfo">
+        /// The culture info whos cache needs to be cleared
+        /// </param>
+        void ClearCache(CultureInfo cultureInfo);
     }
 }
