@@ -30,6 +30,16 @@ namespace Abp.Dependency
                     .LifestyleSingleton()
                 );
 
+            //PerWebRequest
+            context.IocManager.IocContainer.Register(
+                Classes.FromAssembly(context.Assembly)
+                    .IncludeNonPublicTypes()
+                    .BasedOn<IPerWebRequestDependency>()
+                    .WithService.Self()
+                    .WithService.DefaultInterfaces()
+                    .LifestylePerWebRequest()
+                );
+
             //Windsor Interceptors
             context.IocManager.IocContainer.Register(
                 Classes.FromAssembly(context.Assembly)
