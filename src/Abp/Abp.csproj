@@ -58,6 +58,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -136,7 +137,9 @@
     <Compile Include="Configuration\Startup\NavigationConfiguration.cs" />
     <Compile Include="Configuration\Startup\SettingsConfiguration.cs" />
     <Compile Include="DateTimeRange.cs" />
+    <Compile Include="Dependency\AttributeFacility.cs" />
     <Compile Include="Dependency\IPerWebRequestDependency.cs" />
+    <Compile Include="Dependency\PerWebRequestLifestyleManager.cs" />
     <Compile Include="Domain\Entities\Auditing\AuditedEntity.cs" />
     <Compile Include="Domain\Entities\Auditing\CreationAuditedEntity.cs" />
     <Compile Include="Domain\Entities\Auditing\FullAuditedEntity.cs" />
@@ -199,6 +202,9 @@
     <Compile Include="Resources\Embedded\EmbeddedResourceManager.cs" />
     <Compile Include="Resources\Embedded\EmbeddedResourcePathInfo.cs" />
     <Compile Include="Resources\Embedded\IEmbeddedResourceManager.cs" />
+    <Compile Include="Runtime\Caching\IThreadSafeCacheFactoryService.cs" />
+    <Compile Include="Runtime\Caching\IThreadSafeCache.cs" />
+    <Compile Include="Runtime\Caching\ObjectThreadSafeCacheFactoryService.cs" />
     <Compile Include="Runtime\Session\IAbpSession.cs" />
     <Compile Include="Runtime\Session\NullAbpSession.cs" />
     <Compile Include="Configuration\ISettingDefinitionManager.cs" />

@@ -7,7 +7,8 @@ namespace Abp.Runtime.Caching
     /// This class is used to store items to a thread safe and generic cache in a simple manner.
     /// </summary>
     /// <typeparam name="TValue">Value type</typeparam>
-    public class ThreadSafeObjectCache<TValue> where TValue : class
+    public class ThreadSafeObjectCache<TValue> : IThreadSafeCache<TValue>
+        where TValue : class
     {
         /// <summary>
         /// The real cache object to store items.

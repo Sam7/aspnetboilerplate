@@ -3,6 +3,9 @@ using Castle.MicroKernel.Registration;
 
 namespace Abp.Dependency
 {
+    using Castle.MicroKernel.Lifestyle;
+    using Castle.Windsor;
+
     /// <summary>
     /// This class is used to register basic dependency implementations such as <see cref="ITransientDependency"/> and <see cref="ISingletonDependency"/>.
     /// </summary>
@@ -31,13 +34,14 @@ namespace Abp.Dependency
                 );
 
             //PerWebRequest
+            // This should fallback on a different lifestyle scope if web is not available
             context.IocManager.IocContainer.Register(
                 Classes.FromAssembly(context.Assembly)
                     .IncludeNonPublicTypes()
                     .BasedOn<IPerWebRequestDependency>()
                     .WithService.Self()
                     .WithService.DefaultInterfaces()
-                    .LifestylePerWebRequest()
+                    .LifestyleCustom<PerWebRequestLifestyleManager>()
                 );
 
             //Windsor Interceptors

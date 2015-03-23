@@ -30,12 +30,12 @@ namespace Abp.Configuration
 
         private readonly Lazy<Dictionary<string, SettingInfo>> _applicationSettings;
 
-        private readonly ThreadSafeObjectCache<Dictionary<string, SettingInfo>> _tenantSettingCache;
+        private readonly IThreadSafeCache<Dictionary<string, SettingInfo>> _tenantSettingCache;
 
-        private readonly ThreadSafeObjectCache<Dictionary<string, SettingInfo>> _userSettingCache;
+        private readonly IThreadSafeCache<Dictionary<string, SettingInfo>> _userSettingCache;
 
         /// <inheritdoc/>
-        public SettingManager(ISettingDefinitionManager settingDefinitionManager)
+        public SettingManager(ISettingDefinitionManager settingDefinitionManager, IThreadSafeCacheFactoryService threadSafeCacheFactory)
         {
             _settingDefinitionManager = settingDefinitionManager;
 
@@ -43,8 +43,8 @@ namespace Abp.Configuration
             SettingStore = NullSettingStore.Instance; //Should be constructor injection? For that, ISettingStore must be registered!
 
             _applicationSettings = new Lazy<Dictionary<string, SettingInfo>>(GetApplicationSettingsFromDatabase, true);
-            _tenantSettingCache = new ThreadSafeObjectCache<Dictionary<string, SettingInfo>>(new MemoryCache(GetType().FullName + ".TenantSettings"), TimeSpan.FromMinutes(60)); //TODO: Get constant from somewhere else.
-            _userSettingCache = new ThreadSafeObjectCache<Dictionary<string, SettingInfo>>(new MemoryCache(GetType().FullName + ".UserSettings"), TimeSpan.FromMinutes(20)); //TODO: Get constant from somewhere else.
+            _tenantSettingCache = threadSafeCacheFactory.CreateThreadSafeObjectCache<Dictionary<string, SettingInfo>>(GetType().FullName + ".TenantSettings", TimeSpan.FromMinutes(60)); //TODO: Get constant from somewhere else.
+            _userSettingCache = threadSafeCacheFactory.CreateThreadSafeObjectCache<Dictionary<string, SettingInfo>>(GetType().FullName + ".UserSettings", TimeSpan.FromMinutes(20)); //TODO: Get constant from somewhere else.
         }
 
         #region Public methods

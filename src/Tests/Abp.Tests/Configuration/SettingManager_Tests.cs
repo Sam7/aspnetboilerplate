@@ -9,6 +9,8 @@ namespace Abp.Tests.Configuration
 {
     using System;
 
+    using Abp.Runtime.Caching;
+
     public class SettingManager_Tests : TestBaseWithLocalIocManager
     {
         private const string MyAppLevelSetting = "MyAppLevelSetting";
@@ -17,7 +19,7 @@ namespace Abp.Tests.Configuration
         [Fact]
         public void Should_Get_Default_Values_With_No_Store_And_No_Session()
         {
-            var settingManager = new SettingManager(CreateMockSettingDefinitionManager());
+            var settingManager = new SettingManager(CreateMockSettingDefinitionManager(), new ObjectThreadSafeCacheFactoryService());
 
             settingManager.GetSettingValue<int>(MyAppLevelSetting).ShouldBe(42);
             settingManager.GetSettingValue(MyAllLevelsSetting).ShouldBe("application level default value");
@@ -26,7 +28,7 @@ namespace Abp.Tests.Configuration
         [Fact]
         public void Should_Get_Stored_Application_Value_With_No_Session()
         {
-            var settingManager = new SettingManager(CreateMockSettingDefinitionManager());
+            var settingManager = new SettingManager(CreateMockSettingDefinitionManager(), new ObjectThreadSafeCacheFactoryService());
             settingManager.SettingStore = new MemorySettingStore();
 
             settingManager.GetSettingValue<int>(MyAppLevelSetting).ShouldBe(48);
@@ -38,7 +40,7 @@ namespace Abp.Tests.Configuration
         {
             var session = new MyChangableSession();
 
-            var settingManager = new SettingManager(CreateMockSettingDefinitionManager());
+            var settingManager = new SettingManager(CreateMockSettingDefinitionManager(), new ObjectThreadSafeCacheFactoryService());
             settingManager.SettingStore = new MemorySettingStore();
             settingManager.Session = session;
 
@@ -61,7 +63,7 @@ namespace Abp.Tests.Configuration
         [Fact]
         public void Should_Get_All_Values()
         {
-            var settingManager = new SettingManager(CreateMockSettingDefinitionManager());
+            var settingManager = new SettingManager(CreateMockSettingDefinitionManager(), new ObjectThreadSafeCacheFactoryService());
             settingManager.SettingStore = new MemorySettingStore();
 
             settingManager.GetAllSettingValues().Count.ShouldBe(1);
@@ -82,7 +84,7 @@ namespace Abp.Tests.Configuration
         {
             var session = new MyChangableSession();
 
-            var settingManager = new SettingManager(CreateMockSettingDefinitionManager());
+            var settingManager = new SettingManager(CreateMockSettingDefinitionManager(), new ObjectThreadSafeCacheFactoryService());
             settingManager.SettingStore = new MemorySettingStore();
             settingManager.Session = session;
 
@@ -116,7 +118,7 @@ namespace Abp.Tests.Configuration
             var session = new MyChangableSession();
             var store = new MemorySettingStore();
 
-            var settingManager = new SettingManager(CreateMockSettingDefinitionManager());
+            var settingManager = new SettingManager(CreateMockSettingDefinitionManager(), new ObjectThreadSafeCacheFactoryService());
             settingManager.SettingStore = store;
             settingManager.Session = session;
 
