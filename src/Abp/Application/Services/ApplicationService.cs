@@ -8,11 +8,23 @@ using Castle.Core.Logging;
 
 namespace Abp.Application.Services
 {
+    using System;
+
     /// <summary>
     /// This class can be used as a base class for application services. 
     /// </summary>
     public abstract class ApplicationService : IApplicationService
     {
+        /// <summary>
+        /// The localization manager.
+        /// </summary>
+        private ILocalizationManager localizationManager;
+
+        /// <summary>
+        /// The localization source name.
+        /// </summary>
+        private string localizationSourceName;
+
         /// <summary>
         /// Gets current session information.
         /// </summary>
@@ -31,7 +43,21 @@ namespace Abp.Application.Services
         /// <summary>
         /// Reference to the localization manager.
         /// </summary>
-        public ILocalizationManager LocalizationManager { protected get; set; }
+        public ILocalizationManager LocalizationManager {
+            protected get
+            {
+                return this.localizationManager;
+            }
+
+            set
+            {
+                if (this.localizationManager == value)
+                    return;
+                this.localizationManager = value;
+                if (this.localizationSourceName != null)
+                    this.LocalizationSource = this.LocalizationManager.GetSource(this.localizationSourceName);
+            }
+        }
 
         /// <summary>
         /// Reference to the logger to write logs.
@@ -44,8 +70,19 @@ namespace Abp.Application.Services
         /// </summary>
         protected string LocalizationSourceName
         {
-            get { return LocalizationSource.Name; }
-            set { LocalizationSource = LocalizationManager.GetSource(value); }
+            get
+            {
+                return this.LocalizationSource.Name;
+            }
+
+            set
+            {
+                if (this.localizationSourceName != null && this.localizationSourceName.Equals(value, StringComparison.InvariantCulture))
+                    return;
+                this.localizationSourceName = value;
+                if (this.localizationSourceName != null)
+                    this.LocalizationSource = this.LocalizationManager.GetSource(this.localizationSourceName);
+            }
         }
 
         /// <summary>

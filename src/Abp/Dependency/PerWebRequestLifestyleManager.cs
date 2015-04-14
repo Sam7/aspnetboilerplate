@@ -24,7 +24,7 @@ namespace Abp.Dependency
         {
             HttpContext current = HttpContext.Current;
 
-            if (null == current || current.ApplicationInstance == null)
+            if (null == current || current.ApplicationInstance == null || current.Session == null)
             {
                 // Fall back to transient behavior if not in web context.
                 return fallback.Resolve(context, releasePolicy);
