@@ -9,7 +9,7 @@ using Abp.Runtime.Caching;
 
 namespace Abp.Web.Localization
 {
-    internal class LocalizationScriptManager : ILocalizationScriptManager, ISingletonDependency
+    internal class LocalizationScriptManager : ILocalizationScriptManager, IPerWebRequestDependency
     {
         private readonly ILocalizationManager _localizationManager;
 

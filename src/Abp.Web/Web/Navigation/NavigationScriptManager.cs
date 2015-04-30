@@ -6,7 +6,7 @@ using Abp.Runtime.Session;
 
 namespace Abp.Web.Navigation
 {
-    internal class NavigationScriptManager : INavigationScriptManager, ISingletonDependency
+    internal class NavigationScriptManager : INavigationScriptManager, IPerWebRequestDependency
     {
         public IAbpSession AbpSession { get; set; }
 

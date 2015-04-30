@@ -8,7 +8,7 @@ namespace Abp.Web.Settings
     /// <summary>
     /// This class is used to build setting script.
     /// </summary>
-    public class SettingScriptManager : ISettingScriptManager, ISingletonDependency
+    public class SettingScriptManager : ISettingScriptManager, IPerWebRequestDependency
     {
         private readonly ISettingDefinitionManager _settingDefinitionManager;
         private readonly ISettingManager _settingManager;

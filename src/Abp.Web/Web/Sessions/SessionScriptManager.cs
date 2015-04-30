@@ -5,7 +5,7 @@ using Abp.Runtime.Session;
 
 namespace Abp.Web.Sessions
 {
-    public class SessionScriptManager : ISessionScriptManager, ISingletonDependency
+    public class SessionScriptManager : ISessionScriptManager, IPerWebRequestDependency
     {
         public IAbpSession AbpSession { get; set; }
 
