@@ -106,7 +106,7 @@ namespace Abp.Web.Localization
                         string.Format(
                         "        '{0}' : '{1}'" + (i < stringValues.Count - 1 ? "," : ""),
                             stringValues[i].Name,
-                            stringValues[i].Value.Replace("'", "\\'").Replace(Environment.NewLine, string.Empty) //TODO: Allow new line?
+                            stringValues[i].Value.Replace("\\", "\\\\").Replace("'", "\\'")
                             ));
                 }
 
