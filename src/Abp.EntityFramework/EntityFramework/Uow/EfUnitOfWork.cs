@@ -9,6 +9,10 @@ using Castle.Core.Internal;
 
 namespace Abp.EntityFramework.Uow
 {
+    using System.Data.Entity.SqlServer;
+    using System.Runtime.Remoting.Messaging;
+    using System.Threading;
+
     /// <summary>
     /// Implements Unit of work for Entity Framework.
     /// </summary>
@@ -18,65 +22,69 @@ namespace Abp.EntityFramework.Uow
         private readonly IIocResolver _iocResolver;
         private TransactionScope _transaction;
 
+        private static readonly SqlRetryScope SqlRetryScope = new SqlRetryScope();
+
         /// <summary>
         /// Creates a new <see cref="EfUnitOfWork"/>.
         /// </summary>
         public EfUnitOfWork(IIocResolver iocResolver)
         {
-            _iocResolver = iocResolver;
-            _activeDbContexts = new Dictionary<Type, DbContext>();
+            this._iocResolver = iocResolver;
+            this._activeDbContexts = new Dictionary<Type, DbContext>();
         }
 
         protected override void BeginUow()
         {
-            if (Options.IsTransactional == true)
+            if (this.Options.IsTransactional == true)
             {
                 var transactionOptions = new TransactionOptions
                 {
-                    IsolationLevel = Options.IsolationLevel.GetValueOrDefault(IsolationLevel.ReadUncommitted),
+                    IsolationLevel = this.Options.IsolationLevel.GetValueOrDefault(IsolationLevel.ReadUncommitted),
                 };
 
-                if (Options.Timeout.HasValue)
+                if (this.Options.Timeout.HasValue)
                 {
-                    transactionOptions.Timeout = Options.Timeout.Value;
+                    transactionOptions.Timeout = this.Options.Timeout.Value;
                 }
 
-                _transaction = new TransactionScope(
-                    TransactionScopeOption.Required,
-                    transactionOptions,
-                    Options.AsyncFlowOption.GetValueOrDefault(TransactionScopeAsyncFlowOption.Enabled)
-                    );
+                SqlRetryScope.Execute(() =>
+                {
+                    this._transaction = new TransactionScope(
+                        TransactionScopeOption.Required,
+                        transactionOptions,
+                        this.Options.AsyncFlowOption.GetValueOrDefault(TransactionScopeAsyncFlowOption.Enabled));
+                });
             }
         }
 
         public override void SaveChanges()
         {
-            _activeDbContexts.Values.ForEach(dbContext => dbContext.SaveChanges());
+            this._activeDbContexts.Values.ForEach(dbContext => SqlRetryScope.Execute(() => dbContext.SaveChanges()));
         }
 
         public override async Task SaveChangesAsync()
         {
-            foreach (var dbContext in _activeDbContexts.Values)
+            foreach (var dbContext in this._activeDbContexts.Values)
             {
-                await dbContext.SaveChangesAsync();
+                await SqlRetryScope.ExecuteAsync(() => dbContext.SaveChangesAsync(), CancellationToken.None);
             }
         }
 
         protected override void CompleteUow()
         {
-            SaveChanges();
-            if (_transaction != null)
+            this.SaveChanges();
+            if (this._transaction != null)
             {
-                _transaction.Complete();
+                SqlRetryScope.Execute(() => this._transaction.Complete());
             }
         }
 
         protected override async Task CompleteUowAsync()
         {
-            await SaveChangesAsync();
-            if (_transaction != null)
+            await this.SaveChangesAsync();
+            if (this._transaction != null)
             {
-                _transaction.Complete();
+                SqlRetryScope.Execute(() => this._transaction.Complete());
             }
         }
 
@@ -84,9 +92,9 @@ namespace Abp.EntityFramework.Uow
             where TDbContext : DbContext
         {
             DbContext dbContext;
-            if (!_activeDbContexts.TryGetValue(typeof(TDbContext), out dbContext))
+            if (!this._activeDbContexts.TryGetValue(typeof(TDbContext), out dbContext))
             {
-                _activeDbContexts[typeof(TDbContext)] = dbContext = _iocResolver.Resolve<TDbContext>();
+                this._activeDbContexts[typeof(TDbContext)] = dbContext = this._iocResolver.Resolve<TDbContext>();
             }
 
             return (TDbContext)dbContext;
@@ -94,16 +102,18 @@ namespace Abp.EntityFramework.Uow
 
         protected override void DisposeUow()
         {
-            _activeDbContexts.Values.ForEach(dbContext =>
-            {
-                dbContext.Dispose();
-                _iocResolver.Release(dbContext);
-            });
+            SqlRetryScope.Execute(() => { 
+                this._activeDbContexts.Values.ForEach(dbContext =>
+                {
+                    dbContext.Dispose();
+                    this._iocResolver.Release(dbContext);
+                });
 
-            if (_transaction != null)
-            {
-                _transaction.Dispose();
-            }
+                if (this._transaction != null)
+                {
+                    this._transaction.Dispose();
+                }
+            });
         }
     }
 }
