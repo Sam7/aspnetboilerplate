@@ -7,6 +7,8 @@ namespace Abp.EntityFramework.Uow
 
     using Abp.Transactions;
 
+    using Castle.Core.Logging;
+
     /// <summary>
     /// Since Azure only gurantees it's SLA if one uses the SqlAzureExecutionStrategy but is not compatible with transactions,
     /// this class will keep retrying to connect to the Sqlserver until either the query was successful or the maxRetryCount or the maxDelay are hit.
@@ -15,8 +17,8 @@ namespace Abp.EntityFramework.Uow
     {
         private readonly Func<Exception, bool> shouldRetryOn;
 
-        public SqlRetryScope(int maxRetryCount = 5, TimeSpan? defaultCoefficient = null, TimeSpan? maxDelay = null)
-            : base(null, maxRetryCount, defaultCoefficient, maxDelay)
+        public SqlRetryScope(int maxRetryCount = 5, TimeSpan? defaultCoefficient = null, TimeSpan? maxDelay = null, ILogger logger = null)
+            : base(null, maxRetryCount, defaultCoefficient, maxDelay, logger)
         {
             // Since SqlAzureRetriableExceptionDetector is internal only, we have to compile it manually here
             var sqlAzureRetriableExceptionDetectorType = Type.GetType("System.Data.Entity.SqlServer.SqlAzureRetriableExceptionDetector, EntityFramework.SqlServer");

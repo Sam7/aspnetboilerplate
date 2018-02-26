@@ -12,22 +12,29 @@ namespace Abp.Dependency
     [Serializable]
     public class PerWebRequestLifestyleManager : ScopedLifestyleManager
     {
-        private readonly TransientLifestyleManager fallback;
+        private readonly ILifestyleManager fallback1;
+        private readonly ILifestyleManager fallback2;
 
         public PerWebRequestLifestyleManager()
             : base(new WebRequestScopeAccessor())
         {
-            fallback = new TransientLifestyleManager();
+            this.fallback1 = new ScopedLifestyleManager();
+            this.fallback2 = new TransientLifestyleManager();
         }
 
         public override object Resolve(CreationContext context, IReleasePolicy releasePolicy)
         {
-            HttpContext current = HttpContext.Current;
+            var current = HttpContext.Current;
 
             if (null == current || current.ApplicationInstance == null || current.Session == null)
             {
-                // Fall back to transient behavior if not in web context.
-                return fallback.Resolve(context, releasePolicy);
+                // if a scope is defined we'll use that scope
+                var currentScope = Castle.MicroKernel.Lifestyle.Scoped.CallContextLifetimeScope.ObtainCurrentScope();
+                if (currentScope != null)
+                    return this.fallback1.Resolve(context, releasePolicy);
+                else
+                    // Fall back to transient behavior if not in web context or scope context.
+                    return this.fallback2.Resolve(context, releasePolicy);
             }
             else
             {
@@ -37,7 +44,8 @@ namespace Abp.Dependency
 
         public override void Dispose()
         {
-            fallback.Dispose();
+            this.fallback1.Dispose();
+            this.fallback2.Dispose();
 
             base.Dispose();
         }
@@ -46,7 +54,8 @@ namespace Abp.Dependency
         {
             base.Init(componentActivator, kernel, model);
 
-            fallback.Init(componentActivator, kernel, model);
+            this.fallback1.Init(componentActivator, kernel, model);
+            this.fallback2.Init(componentActivator, kernel, model);
         }
     }
 }
