@@ -25,8 +25,17 @@ namespace Abp.Dependency
         public override object Resolve(CreationContext context, IReleasePolicy releasePolicy)
         {
             var current = HttpContext.Current;
+            HttpRequest request;
+            try
+            {
+                request = current.Request;
+            }
+            catch (HttpException ex)
+            {
+                request = null;
+            }
 
-            if (null == current || current.ApplicationInstance == null || current.Session == null)
+            if (null == current || current.ApplicationInstance == null || request == null)
             {
                 // if a scope is defined we'll use that scope
                 var currentScope = Castle.MicroKernel.Lifestyle.Scoped.CallContextLifetimeScope.ObtainCurrentScope();
